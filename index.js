@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
 // Import of the model Recipe from './models/Recipe.model.js'
-const Recipe = require('./models/Recipe.model');
+const Recipe  = require ('./models/Recipe.model');
+
 // Import of the data from './data.json'
 const data = require('./data');
 
-const MONGODB_URI = 'mongodb://localhost:27017/recipe-app';
+const MONGODB_URI = 'mongodb://127.0.0.1:27017/recipe-app';
 
 //Method 1 : Using Async Await
 
@@ -17,8 +18,38 @@ const manageRecipes = async () => {
 
     // Before adding any recipes to the database, let's remove all existing ones
     await Recipe.deleteMany();
+    
 
     // Run your code here, after you have insured that the connection was made
+   const newRecipe = {
+    title: "Vegan Balinese Curry",
+    level: "Easy Peasy",
+    ingredients: ["Shallots","Garlic","Ginger","Lemon Juice","Lemongrass","Cashews"
+     ,"Bird Eye Chillies","Curry leaves","Sugar","Turmeric powder","Salt","Water","oil","basmati rice","Potato",
+     "Green beans","Broccoli","Coconut Milk"],
+    Type: "Dinner",
+    Cuisine: "Indonesian",
+    dishType: "Vegan",
+    Image: "https://veganpunks.com/wp-content/uploads/2021/06/Sayur-Kare-1.jpg",
+    Duration: 25
+  }
+
+  await Recipe.create(newRecipe)
+
+  await Recipe.insertMany(data) 
+  
+//update
+
+await Recipe.findOneAndUpdate({title:'Rigatoni alla Genovese'},{duration:100});
+     console.log(await Recipe.find({title:'Rigatoni alla Genovese'}));
+
+//delete 1
+  
+await Recipe.deleteOne({title: "Carrot Cake"});
+console.log("Delete Sucess")
+
+
+  mongoose.disconnect()
   } catch (error) {
     console.log(error);
   }
